@@ -8,7 +8,7 @@ app.use(express.json());
 const handleDisconnect = () => {
     // Configurer la connexion MySQL
     const db = mysql.createConnection({
-        host: 'mysql-db', // Si votre API tourne dans un conteneur, utilisez le nom du service Docker
+        host: 'mysql', // Si votre API tourne dans un conteneur, utilisez le nom du service Docker
         user: 'admin',
         password: 'adminpassword',
         database: 'tododb'
