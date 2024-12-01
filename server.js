@@ -11,6 +11,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.error('Rejet non géré à :', promise, 'raison :', reason);
 });
 
+console.log('Lancement de l\'application...'); 
 
 // Configurer le middleware pour gérer les requêtes JSON
 app.use(express.json());
