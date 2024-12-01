@@ -7,7 +7,12 @@ app.use(express.json());
 
 const handleDisconnect = () => {
     // Configurer la connexion MySQL
-    const db = mysql.createConnection(process.env.DATABASE_URL);
+    const db = mysql.createConnection({
+        uri: process.env.DATABASE_URL, // Connexion via DATABASE_URL
+        ssl: {
+            rejectUnauthorized: true // Valide le certificat SSL
+        }
+    });
 
 
     db.connect((err) => {
