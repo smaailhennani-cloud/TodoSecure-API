@@ -24,6 +24,11 @@ const handleDisconnect = () => {
             rejectUnauthorized: true, // Valide les certificats SSL
         },
     });
+    // Chargez le script SQL
+    const initScript = fs.readFileSync(path.join(__dirname, 'db', 'init.sql'), 'utf-8');
+    await db.query(initScript);
+    console.log('Tables créées avec succès.');
+    await db.end();
 
 
 
