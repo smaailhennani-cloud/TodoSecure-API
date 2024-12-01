@@ -16,7 +16,7 @@ console.log('Lancement de l\'application...');
 // Configurer le middleware pour gérer les requêtes JSON
 app.use(express.json());
 
-const handleDisconnect = () => {
+const handleDisconnect = async () => {
     // Configurer la connexion MySQL
     const db = mysql.createConnection({
         uri: process.env.DATABASE_URL,
