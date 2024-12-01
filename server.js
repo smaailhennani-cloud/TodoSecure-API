@@ -2,6 +2,16 @@ const express = require('express');
 const mysql = require('mysql2');
 const app = express();
 
+process.on('uncaughtException', (err) => {
+    console.error('Erreur non gérée :', err);
+    process.exit(1); // Arrête l'application proprement
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Rejet non géré à :', promise, 'raison :', reason);
+});
+
+
 // Configurer le middleware pour gérer les requêtes JSON
 app.use(express.json());
 
