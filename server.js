@@ -19,11 +19,12 @@ app.use(express.json());
 const handleDisconnect = () => {
     // Configurer la connexion MySQL
     const db = mysql.createConnection({
-        uri: process.env.DATABASE_URL, // Connexion via DATABASE_URL
+        uri: process.env.DATABASE_URL,
         ssl: {
-            rejectUnauthorized: true // Valide le certificat SSL
-        }
+            rejectUnauthorized: true, // Valide les certificats SSL
+        },
     });
+
 
 
     db.connect((err) => {
@@ -36,11 +37,12 @@ const handleDisconnect = () => {
     });
 
     db.on('error', (err) => {
-        console.error('Erreur de connexion MySQL détectée :', err);
+        console.error('Erreur MySQL détectée :', err);
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            handleDisconnect();
+            console.log('Reconnexion à MySQL...');
+            handleDisconnect(); // Reconnecter automatiquement
         } else {
-            throw err;
+            throw err; // Lever l'erreur pour une gestion ultérieure
         }
     });
 
@@ -143,10 +145,20 @@ const handleDisconnect = () => {
     });
 
     // Démarrer le serveur
-    const PORT = process.env.PORT | 3000;
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         console.log(`API en écoute sur http://localhost:${PORT}`);
     });
+    process.on('SIGTERM', () => {
+        console.log('Signal SIGTERM reçu. Fermeture du serveur...');
+        process.exit(0);
+    });
+
+    process.on('SIGINT', () => {
+        console.log('Signal SIGINT reçu. Fermeture du serveur...');
+        process.exit(0);
+    });
+
 };
 
 handleDisconnect();
