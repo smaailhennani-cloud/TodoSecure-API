@@ -40,6 +40,15 @@ const handleDisconnect = async () => {
             setTimeout(handleDisconnect, 5000); // Reconnexion après 5 secondes
         } else {
             console.log('Connecté à MySQL');
+            // Initialisation de la base de données avec init.sql
+            const initScript = fs.readFileSync(path.join(__dirname, 'db', 'init.sql'), 'utf-8');
+            db.query(initScript, (err) => {
+                if (err) {
+                    console.error('Erreur lors de l\'initialisation de la base de données :', err);
+                } else {
+                    console.log('Tables créées avec succès.');
+                }
+            });
         }
     });
 
