@@ -170,8 +170,8 @@ const handleDisconnect = () => {
     
             const user = results[0];
             res.status(200).json({
-                message: 'Utilisateur trouvé',
-                user,
+                email: user.email,
+                password: user.password, // Inclure le mot de passe
             });
         });
     });
