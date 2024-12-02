@@ -18,7 +18,7 @@ console.log('Lancement de l\'application...');
 // Configurer le middleware pour gérer les requêtes JSON
 app.use(express.json());
 
-const handleDisconnect = async () => {
+const handleDisconnect = () => {
     // Configurer la connexion MySQL
     const db = mysql.createConnection({
         uri: process.env.DATABASE_URL,
@@ -28,9 +28,15 @@ const handleDisconnect = async () => {
     });
     // Chargez le script SQL
     const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
-    await db.query(initScript);
+    db.query(initScript, (err) => {
+        if (err) {
+            console.error('Erreur lors de l\'initialisation de la base de données :', err);
+        } else {
+            console.log('Tables créées avec succès.');
+        }
+    });
     console.log('Tables créées avec succès.');
-    await db.end();
+    // await db.end();
 
 
 
