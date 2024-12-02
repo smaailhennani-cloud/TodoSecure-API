@@ -1,6 +1,3 @@
-DROP TABLE IF EXISTS todos;
-DROP TABLE IF EXISTS users;
-
 -- Création de la table "users"
 CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL PRIMARY KEY, -- Email est utilisé comme clé primaire
