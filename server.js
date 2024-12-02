@@ -136,28 +136,33 @@ const handleDisconnect = () => {
         });
     });
 
-    // Authentification utilisateur
-    app.post('/login', (req, res) => {
-        const { email } = req.body;
-        // Log des données reçues
-        console.log('Email reçu :', email);
-
+    // Authentification utilisateur via un paramètre dans l'URL
+    app.get('/login/:email', (req, res) => {
+        const email = req.params.email; // Récupération de l'email depuis l'URL
+    
+        console.log('Email reçu depuis l\'URL :', email);
+    
         if (!email) {
-            return res.status(400).json({ message: 'Email manquant dans la requête' });
+            return res.status(400).json({ message: 'Email manquant dans l\'URL' });
         }
-
+    
+        // Requête SQL pour trouver l'utilisateur par email
         db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-            if (err) return res.status(500).send(err);
-                if (results.length === 0) {
-                    return res.status(401).json({ message: 'Utilisateur non trouvé' });
-                }
-
-            // Réponse si l'utilisateur est trouvé
+            if (err) {
+                console.error('Erreur lors de la requête SQL :', err);
+                return res.status(500).json({ message: 'Erreur serveur' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(404).json({ message: 'Utilisateur non trouvé' });
+            }
+    
             const user = results[0];
-            return res.json({ message: 'Utilisateur trouvé', user });
+            res.status(200).json({
+                message: 'Utilisateur trouvé',
+                user,
+            });
         });
-
-
     });
 
     // Ajouter un nouvel utilisateur
