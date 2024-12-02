@@ -209,6 +209,7 @@ const handleDisconnect = () => {
     // Récupérer les tâches par utilisateur
     app.get('/todos/:email', (req, res) => {
         const email = req.params.email;
+        console.log('Email reçu depuis l\'URL pour la requete todos :', email);
         db.query('SELECT * FROM todos WHERE userEmail = ?', [email], (err, results) => {
             if (err) return res.status(500).send(err);
             res.json(results);
