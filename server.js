@@ -3,6 +3,17 @@ const mysql = require('mysql2');
 const fs = require('fs'); // Ajout pour lire le fichier SQL
 const path = require('path'); // Import pour manipuler les chemins de fichiers
 const app = express();
+const cors = require('cors');
+
+// Configuration CORS
+const corsOptions = {
+    origin: 'http://localhost:4200', // Remplacez par les origines autorisées
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
+    allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+};
+
+// Activer le middleware CORS
+app.use(cors(corsOptions));
 
 process.on('uncaughtException', (err) => {
     console.error('Erreur non gérée :', err);
