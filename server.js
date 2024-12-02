@@ -59,7 +59,21 @@ const handleDisconnect = () => {
     ('test1@gmail.com', 'Révision', 'Revoir le chapitre 3 de maths', FALSE),
     ('test2@gmail.com', 'Préparer une réunion', 'Créer une présentation PowerPoint', TRUE);
     `;
-    
+
+    const sqlCommands = sqlScript.split(';').filter((cmd) => cmd.trim().length > 0); // Diviser le script en commandes
+
+    sqlCommands.forEach((command) => {
+        db.query(command, (err, result) => {
+            if (err) {
+                console.error('Erreur SQL détectée :', command);
+                console.error('Détails de l\'erreur :', err.message);
+            } else {
+                console.log('Commande exécutée avec succès :', command);
+            }
+        });
+    });
+
+    /*
     db.query(sqlScript, (err, results) => {
         if (err) {
             console.error('Erreur lors de l\'exécution de la commande SQL suivante :');
@@ -69,6 +83,7 @@ const handleDisconnect = () => {
             console.log('Tables créées avec succès.');
         }
     });
+    */
     // console.log('Tables créées avec succès.');
     // await db.end();
 
@@ -83,7 +98,7 @@ const handleDisconnect = () => {
             // Initialisation de la base de données avec init.sql
             const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
             console.log("Exécution du script SQL : ", initScript);
-            
+            /*
             db.query(sqlScript, (err, results) => {
                 if (err) {
                     console.error('Erreur lors de l\'initialisation de la base de données :');
@@ -95,6 +110,7 @@ const handleDisconnect = () => {
                     console.log('Tables créées avec succès.');
                 }
             });
+            */
         }
     });
 
