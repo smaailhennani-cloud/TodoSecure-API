@@ -29,11 +29,41 @@ const handleDisconnect = () => {
     // Chargez le script SQL
     const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
     console.log("Exécution du script SQL : ", initScript);
+
+    const sqlScript = `
+    DROP TABLE IF EXISTS todos;
+    DROP TABLE IF EXISTS users;
     
-    db.query(initScript, (err, results) => {
+    CREATE TABLE IF NOT EXISTS users (
+        email VARCHAR(255) NOT NULL PRIMARY KEY,
+        password VARCHAR(255) NOT NULL
+    );
+    
+    CREATE TABLE IF NOT EXISTS todos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        userEmail VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        done BOOLEAN DEFAULT FALSE,
+        CONSTRAINT fk_user FOREIGN KEY (userEmail) REFERENCES users(email) ON DELETE CASCADE
+    );
+    
+    INSERT IGNORE INTO users (email, password) VALUES
+    ('test@gmail.com', 'test'),
+    ('test1@gmail.com', 'test1'),
+    ('test2@gmail.com', 'test2');
+    
+    INSERT IGNORE INTO todos (userEmail, title, description, done) VALUES
+    ('test@gmail.com', 'Acheter des courses', 'Acheter du lait, du pain et des œufs', FALSE),
+    ('test1@gmail.com', 'Faire du sport', 'Courir 5 km ce soir', TRUE),
+    ('test1@gmail.com', 'Révision', 'Revoir le chapitre 3 de maths', FALSE),
+    ('test2@gmail.com', 'Préparer une réunion', 'Créer une présentation PowerPoint', TRUE);
+    `;
+    
+    db.query(sqlScript, (err, results) => {
         if (err) {
             console.error('Erreur lors de l\'exécution de la commande SQL suivante :');
-            console.error(initScript); // Affiche le script complet
+            console.error(sqlScript); // Affiche le script complet
             console.error('Détails de l\'erreur :', err);
         } else {
             console.log('Tables créées avec succès.');
@@ -54,7 +84,7 @@ const handleDisconnect = () => {
             const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
             console.log("Exécution du script SQL : ", initScript);
             
-            db.query(initScript, (err, results) => {
+            db.query(sqlScript, (err, results) => {
                 if (err) {
                     console.error('Erreur lors de l\'initialisation de la base de données :');
                     console.error('Message:', err.message);
