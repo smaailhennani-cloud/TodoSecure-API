@@ -27,7 +27,7 @@ const handleDisconnect = async () => {
         },
     });
     // Chargez le script SQL
-    const initScript = fs.readFileSync(path.join(__dirname, 'db', 'init.sql'), 'utf-8');
+    const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
     await db.query(initScript);
     console.log('Tables créées avec succès.');
     await db.end();
@@ -41,7 +41,7 @@ const handleDisconnect = async () => {
         } else {
             console.log('Connecté à MySQL');
             // Initialisation de la base de données avec init.sql
-            const initScript = fs.readFileSync(path.join(__dirname, 'db', 'init.sql'), 'utf-8');
+            const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
             db.query(initScript, (err) => {
                 if (err) {
                     console.error('Erreur lors de l\'initialisation de la base de données :', err);
