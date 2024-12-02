@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS todos (
     title VARCHAR(255) NOT NULL,             -- Titre de la tâche
     description TEXT,                        -- Description de la tâche
     done BOOLEAN DEFAULT FALSE,              -- Statut (terminé ou non)
-    FOREIGN KEY (userEmail) REFERENCES users(email) -- Relation avec la table "users"
+    CONSTRAINT fk_user FOREIGN KEY (userEmail) REFERENCES users(email) ON DELETE CASCADE
 );
 
 -- Ajout d'utilisateurs
