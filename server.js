@@ -233,10 +233,10 @@ const handleDisconnect = () => {
     // Mettre à jour une tâche
     app.put('/todos/:id', (req, res) => {
         const todoId = req.params.id;
-        const { title, description } = req.body;
+        const { title, description, done } = req.body;
         db.query(
-            'UPDATE todos SET title = ?, description = ? WHERE id = ?',
-            [title, description, todoId],
+            'UPDATE todos SET title = ?, description = ?, done = ? WHERE id = ?',
+            [title, description, done, todoId],
             (err, results) => {
                 if (err) return res.status(500).send(err);
                 res.json({ message: 'Todo mis à jour avec succès' });
