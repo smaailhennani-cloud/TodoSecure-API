@@ -32,7 +32,11 @@ const handleDisconnect = () => {
     
     db.query(initScript, (err, results) => {
         if (err) {
-            console.error('Erreur lors de l\'initialisation de la base de données :', err.sqlMessage);
+            console.error('Erreur lors de l\'initialisation de la base de données :');
+            console.error('Message:', err.message);
+            console.error('Code:', err.code);
+            console.error('SQL State:', err.sqlState);
+            console.error('SQL Query:', err.sql);
         } else {
             console.log('Tables créées avec succès.');
         }
@@ -54,7 +58,11 @@ const handleDisconnect = () => {
             
             db.query(initScript, (err, results) => {
                 if (err) {
-                    console.error('Erreur lors de l\'initialisation de la base de données :', err.sqlMessage);
+                    console.error('Erreur lors de l\'initialisation de la base de données :');
+                    console.error('Message:', err.message);
+                    console.error('Code:', err.code);
+                    console.error('SQL State:', err.sqlState);
+                    console.error('SQL Query:', err.sql);
                 } else {
                     console.log('Tables créées avec succès.');
                 }
