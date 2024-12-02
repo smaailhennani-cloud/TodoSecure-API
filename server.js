@@ -28,14 +28,16 @@ const handleDisconnect = () => {
     });
     // Chargez le script SQL
     const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
-    db.query(initScript, (err) => {
+    console.log("Exécution du script SQL : ", initScript);
+    
+    db.query(initScript, (err, results) => {
         if (err) {
-            console.error('Erreur lors de l\'initialisation de la base de données :', err);
+            console.error('Erreur lors de l\'initialisation de la base de données :', err.sqlMessage);
         } else {
             console.log('Tables créées avec succès.');
         }
     });
-    console.log('Tables créées avec succès.');
+    // console.log('Tables créées avec succès.');
     // await db.end();
 
 
@@ -48,9 +50,11 @@ const handleDisconnect = () => {
             console.log('Connecté à MySQL');
             // Initialisation de la base de données avec init.sql
             const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf-8');
-            db.query(initScript, (err) => {
+            console.log("Exécution du script SQL : ", initScript);
+            
+            db.query(initScript, (err, results) => {
                 if (err) {
-                    console.error('Erreur lors de l\'initialisation de la base de données :', err);
+                    console.error('Erreur lors de l\'initialisation de la base de données :', err.sqlMessage);
                 } else {
                     console.log('Tables créées avec succès.');
                 }
