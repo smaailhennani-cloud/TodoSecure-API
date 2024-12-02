@@ -138,13 +138,27 @@ const handleDisconnect = () => {
 
     // Exemple d'endpoint : récupérer tous les todos
     app.get('/todos', (req, res) => {
-        db.query('SELECT * FROM todos', (err, results) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.json(results);
-            }
-        });
+        const { userEmail } = req.query; // Extraction du paramètre userEmail
+    
+        if (userEmail) {
+            // Filtrer les tâches par userEmail
+            db.query('SELECT * FROM todos WHERE userEmail = ?', [userEmail], (err, results) => {
+                if (err) {
+                    console.error('Erreur lors de la requête SQL :', err);
+                    return res.status(500).json({ message: 'Erreur serveur' });
+                }
+                res.status(200).json(results); // Retourne les tâches filtrées
+            });
+        } else {
+            // Retourner toutes les tâches si aucun userEmail n'est fourni
+            db.query('SELECT * FROM todos', (err, results) => {
+                if (err) {
+                    console.error('Erreur lors de la requête SQL :', err);
+                    return res.status(500).json({ message: 'Erreur serveur' });
+                }
+                res.status(200).json(results); // Retourne toutes les tâches
+            });
+        }
     });
 
     // Authentification utilisateur via un paramètre dans l'URL
