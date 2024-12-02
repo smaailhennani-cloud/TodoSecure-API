@@ -234,6 +234,9 @@ const handleDisconnect = () => {
     app.put('/todos/:id', (req, res) => {
         const todoId = req.params.id;
         const { title, description, done } = req.body;
+
+        console.log('Données reçues :', { title, description, done }); // Log des données reçues
+
         db.query(
             'UPDATE todos SET title = ?, description = ?, done = ? WHERE id = ?',
             [title, description, done, todoId],
