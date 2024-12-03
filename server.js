@@ -5,9 +5,18 @@ const path = require('path'); // Import pour manipuler les chemins de fichiers
 const app = express();
 const cors = require('cors');
 
+const allowedOrigins = ['http://localhost:4200', 'https://gylgamesh34.github.io'];
 // Configuration CORS
 const corsOptions = {
-    origin: 'http://localhost:4200', // Remplacez par les origines autorisées
+    // origin: 'http://localhost:4200', // Remplacez par les origines autorisées
+    origin: function (origin, callback) {
+        // Autoriser les requêtes sans origine (par exemple, Postman ou serveurs internes)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
     allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
 };
