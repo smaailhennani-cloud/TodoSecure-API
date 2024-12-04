@@ -205,8 +205,15 @@ const handleDisconnect = () => {
         const { email, password } = req.body; // Ajouter des champs si nécessaire
         db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, password], (err, results) => {
             if (err) return res.status(500).send(err);
-            console.log("userId : ", userId);
-            res.json({ message: 'Utilisateur ajouté avec succès', userId: results.insertId });
+            // Vérifiez que `results` contient `insertId`
+            if (results && results.insertId) {
+                const userId = results.insertId; // Correctement assigné à partir de `results`
+                console.log("userId :", userId);
+                res.json({ message: 'Utilisateur ajouté avec succès', userId: userId });
+            } else {
+                console.error("Aucun ID inséré retourné par la base de données");
+                res.status(500).send("Erreur serveur : Aucun ID inséré");
+            }
         });
     });
 
