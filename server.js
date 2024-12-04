@@ -203,6 +203,7 @@ const handleDisconnect = () => {
     app.post('/users', (req, res) => {
         console.log("endPoint post/users");
         const { email, password } = req.body; // Ajouter des champs si nécessaire
+        console.log("email, pswd : ", email, password);
         db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, password], (err, results) => {
             if (err) return res.status(500).send(err);
             // Vérifiez que `results` contient `insertId`
