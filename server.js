@@ -201,9 +201,11 @@ const handleDisconnect = () => {
 
     // Ajouter un nouvel utilisateur
     app.post('/users', (req, res) => {
+        console.log("endPoint post/users")l;
         const { email, password } = req.body; // Ajouter des champs si nécessaire
         db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, password], (err, results) => {
             if (err) return res.status(500).send(err);
+            console.log("userId : ", userId);
             res.json({ message: 'Utilisateur ajouté avec succès', userId: results.insertId });
         });
     });
