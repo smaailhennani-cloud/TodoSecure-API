@@ -4,6 +4,7 @@ const fs = require('fs'); // Ajout pour lire le fichier SQL
 const path = require('path'); // Import pour manipuler les chemins de fichiers
 const app = express();
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const allowedOrigins = ['http://localhost:4200', 'https://gylgamesh34.github.io'];
 // Configuration CORS
@@ -144,7 +145,22 @@ const handleDisconnect = () => {
         }
     });
 
+    function authenticateToken(req, res, next) {
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1]; // Format attendu: "Bearer TOKEN"
+    
+        if (!token) return res.sendStatus(401);
+    
+        jwt.verify(token, 'votre_clé_secrète', (err, user) => {
+            if (err) return res.sendStatus(403);
+            req.user = user;
+            next();
+        });
+    }
 
+    // Appliquer authenticateToken à toutes les routes commençant par /todos
+    app.use('/todos', authenticateToken);
+    
     // Exemple d'endpoint : récupérer tous les todos
     app.get('/todos', (req, res) => {
         const { userEmail } = req.query; // Extraction du paramètre userEmail
@@ -171,9 +187,10 @@ const handleDisconnect = () => {
     });
 
     // Authentification utilisateur via un paramètre dans l'URL
-    app.get('/login/:email', (req, res) => {
-        const email = req.params.email; // Récupération de l'email depuis l'URL
-    
+    app.get('/login', (req, res) => {
+        // const email = req.params.email; // Récupération de l'email depuis l'URL
+        const { email, password } = req.body;
+
         console.log('Email reçu depuis l\'URL :', email);
     
         if (!email) {
@@ -188,14 +205,26 @@ const handleDisconnect = () => {
             }
     
             if (results.length === 0) {
-                return res.status(404).json({ message: 'Utilisateur non trouvé' });
+                return res.status(404).json({ message: 'Email ou mot de passe incorrect' });
             }
     
             const user = results[0];
+            const match = await bcrypt.compare(password, user.password);
+            if (!match) {
+                return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+            }
+            
+            // Générer le token JWT
+            const token = jwt.sign({ email: user.email }, 'votre_clé_secrète', { expiresIn: '1h' });
+
+            res.json({ token });
+
+            /*
             res.status(200).json({
                 email: user.email,
                 password: user.password, // Inclure le mot de passe
             });
+            */
         });
     });
 
@@ -204,6 +233,7 @@ const handleDisconnect = () => {
         console.log("endPoint post/users");
         const { email, password } = req.body; // Ajouter des champs si nécessaire
         console.log("email, pswd : ", email, password);
+        const hashedPassword = await bcrypt.hash(password, 10); // Hasher le mot de passe avec un salage de 10
         db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, password], (err, results) => {
             if (err) return res.status(500).send(err);
             // Vérifiez que `results` contient `insertId`
