@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Installer les dépendances
-RUN npm install jsonwebtoken bcrypt
+RUN npm install
 
 # Copier le code de l'application
 COPY . .
