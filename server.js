@@ -229,7 +229,7 @@ const handleDisconnect = () => {
     });
 
     // Ajouter un nouvel utilisateur
-    app.post('/users', (req, res) => {
+    app.post('/users', async (req, res) => {
         console.log("endPoint post/users");
         const { email, password } = req.body; // Ajouter des champs si nécessaire
         console.log("email, pswd : ", email, password);
