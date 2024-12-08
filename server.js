@@ -187,7 +187,7 @@ const handleDisconnect = () => {
     });
 
     // Authentification utilisateur via un paramètre dans l'URL
-    app.get('/login', (req, res) => {
+    app.post('/login', (req, res) => {
         // const email = req.params.email; // Récupération de l'email depuis l'URL
         const { email, password } = req.body;
 
