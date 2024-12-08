@@ -198,7 +198,7 @@ const handleDisconnect = () => {
         }
     
         // Requête SQL pour trouver l'utilisateur par email
-        db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+        db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
             if (err) {
                 console.error('Erreur lors de la requête SQL :', err);
                 return res.status(500).json({ message: 'Erreur serveur' });
