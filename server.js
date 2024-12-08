@@ -5,6 +5,7 @@ const path = require('path'); // Import pour manipuler les chemins de fichiers
 const app = express();
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const allowedOrigins = ['http://localhost:4200', 'https://gylgamesh34.github.io'];
 // Configuration CORS
