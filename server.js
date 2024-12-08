@@ -209,6 +209,7 @@ const handleDisconnect = () => {
             }
     
             const user = results[0];
+            console.log("¨login passwordCrypt: ", user.password);
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
                 return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
