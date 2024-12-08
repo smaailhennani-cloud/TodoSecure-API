@@ -205,6 +205,7 @@ const handleDisconnect = () => {
             }
     
             if (results.length === 0) {
+                console.log("connexion length = 0");
                 return res.status(404).json({ message: 'Email ou mot de passe incorrect' });
             }
     
