@@ -171,10 +171,16 @@ const handleDisconnect = () => {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1]; // Format attendu: "Bearer TOKEN"
     
-        if (!token) return res.sendStatus(401);
+        if (!token) {
+            console.log('Aucun token fourni.');
+            return res.status(401).json({ message: 'Accès non autorisé : Aucun token fourni.' });
+        }
     
         jwt.verify(token, 'votre_clé_secrète', (err, user) => {
-            if (err) return res.sendStatus(403);
+            if (err) {
+                console.error('Échec de la vérification du token :', err);
+                return res.status(403).json({ message: 'Token invalide ou expiré.' });
+            }
             req.user = user;
             next();
         });
