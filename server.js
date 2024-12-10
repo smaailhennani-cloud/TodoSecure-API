@@ -239,16 +239,13 @@ const handleDisconnect = () => {
         const hashedPassword = await bcrypt.hash(password, 10); // Hasher le mot de passe avec un salage de 10
         console.log("New password hash add user : ",hashedPassword);
         db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err, results) => {
-            if (err) return res.status(500).send(err);
-            // Vérifiez que `results` contient `insertId`
-            if (results && results.insertId) {
-                const userId = results.insertId; // Correctement assigné à partir de `results`
-                console.log("userId :", userId);
-                res.json({ message: 'Utilisateur ajouté avec succès', userId: userId });
-            } else {
-                console.error("Aucun ID inséré retourné par la base de données");
-                res.status(500).send("Erreur serveur : Aucun ID inséré");
+            if (err) {
+                console.error("Erreur SQL :", err);
+                return res.status(500).json({ error: 'Erreur lors de l’ajout dans la base de données', details: err });
             }
+        
+            // Utilisez l'email comme identifiant unique
+            res.json({ message: 'Utilisateur ajouté avec succès', email: email });
         });
     });
 
