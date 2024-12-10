@@ -46,12 +46,17 @@ const users = [
     { email : 'test2@gmail.com', password : 'test2' },
 ];
 
-const hashedUsers = await.Promise.all(
-    users.map(async (user) => {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-        return `('${user.email}', '${hashedPassword}')`;
-    })
-);
+// Fonction asynchrone pour hacher les mots de passe
+async function hashUserPasswords(users) {
+    return Promise.all(
+        users.map(async (user) => {
+            const hashedPassword = await bcrypt.hash(user.password, 10);
+            return `('${user.email}', '${hashedPassword}')`;
+        })
+    );
+}
+
+const hashedUsers = await hashUserPasswords(users);
     
 
 const handleDisconnect = () => {
