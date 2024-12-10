@@ -57,15 +57,19 @@ async function hashUserPasswords(users) {
 }
 
 const hashedUsers = [];
-// let hashedUsers = [];
-
+ 
 async function initializeHashedUsers() {
     const result = await hashUserPasswords(users);
     hashedUsers.push(...result); // Ajout des éléments à l'intérieur du tableau
 }
 
 // Appelez cette fonction avant de générer le script SQL ou de démarrer le serveur
-initializeHashedUsers();  
+
+initializeHashedUsers().then(() => {
+    console.log("Utilisateurs hachés : ", hashedUsers);
+}).catch((error) => {
+    console.error("Erreur lors de l'initialisation des utilisateurs hachés : ", error);
+});
 
 const handleDisconnect = () => {
     // Configurer la connexion MySQL
