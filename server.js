@@ -98,7 +98,7 @@ const handleDisconnect = () => {
     );
     
     INSERT IGNORE INTO users (email, password) VALUES
-    ${hashedUser.join(',\n')};
+    ${hashedUsers.join(',\n')};
     
     INSERT IGNORE INTO todos (userEmail, title, description, done) VALUES
     ('test@gmail.com', 'Acheter des courses', 'Acheter du lait, du pain et des œufs', FALSE),
