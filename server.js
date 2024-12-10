@@ -232,20 +232,45 @@ const handleDisconnect = () => {
     });
 
     // Ajouter un nouvel utilisateur
+    // Ajouter un nouvel utilisateur
     app.post('/users', async (req, res) => {
         console.log("endPoint post/users");
         const { email, password } = req.body; // Ajouter des champs si nécessaire
+    
+        // Validation des champs
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email et mot de passe sont requis.' });
+        }
+    
         console.log("email, pswd : ", email, password);
-        const hashedPassword = await bcrypt.hash(password, 10); // Hasher le mot de passe avec un salage de 10
-        console.log("New password hash add user : ",hashedPassword);
-        db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err, results) => {
+    
+        // Vérifier si l'email existe déjà
+        db.query('SELECT email FROM users WHERE email = ?', [email], async (err, results) => {
             if (err) {
                 console.error("Erreur SQL :", err);
-                return res.status(500).json({ error: 'Erreur lors de l’ajout dans la base de données', details: err });
+                return res.status(500).json({ error: 'Erreur serveur lors de la vérification de l’email.', details: err });
             }
-        
-            // Utilisez l'email comme identifiant unique
-            res.json({ message: 'Utilisateur ajouté avec succès', email: email });
+    
+            if (results.length > 0) {
+                // L'email existe déjà
+                console.log("Email déjà utilisé :", email);
+                return res.status(400).json({ error: 'Cet email est déjà utilisé.' });
+            }
+    
+            // Hacher le mot de passe
+            const hashedPassword = await bcrypt.hash(password, 10);
+            console.log("New password hash add user : ", hashedPassword);
+    
+            // Insérer le nouvel utilisateur
+            db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err, results) => {
+                if (err) {
+                    console.error("Erreur SQL :", err);
+                    return res.status(500).json({ error: 'Erreur lors de l’ajout dans la base de données', details: err });
+                }
+    
+                // Répondre avec succès
+                res.status(201).json({ message: 'Utilisateur ajouté avec succès', email: email });
+            });
         });
     });
 
