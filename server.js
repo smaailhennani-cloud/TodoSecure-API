@@ -40,6 +40,20 @@ console.log('Lancement de l\'application...');
 // Configurer le middleware pour gérer les requêtes JSON
 app.use(express.json());
 
+const users = [
+    { email : 'test@gmail.com', password : 'test' },
+    { email : 'test1@gmail.com', password : 'test1' },
+    { email : 'test2@gmail.com', password : 'test2' },
+];
+
+const hashedUsers = await.Promise.all(
+    users.map(async (user) => {
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        return `('${user.email}', '${hashedPassword}')`;
+    })
+);
+    
+
 const handleDisconnect = () => {
     // Configurer la connexion MySQL
     const db = mysql.createConnection({
@@ -71,9 +85,7 @@ const handleDisconnect = () => {
     );
     
     INSERT IGNORE INTO users (email, password) VALUES
-    ('test@gmail.com', 'test'),
-    ('test1@gmail.com', 'test1'),
-    ('test2@gmail.com', 'test2');
+    ${hashedUser.join(',\n')};
     
     INSERT IGNORE INTO todos (userEmail, title, description, done) VALUES
     ('test@gmail.com', 'Acheter des courses', 'Acheter du lait, du pain et des œufs', FALSE),
