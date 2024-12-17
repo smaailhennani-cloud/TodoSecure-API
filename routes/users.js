@@ -58,11 +58,8 @@ router.post('/users', (req, res) => {
 
 /**
  * @route GET /users
- * @description Crée un nouvel utilisateur avec un mot de passe haché
- * @bodyParam {string} email - Email unique de l'utilisateur
- * @bodyParam {string} password - Mot de passe en texte clair
- * @returns {201} JSON contenant un message de succès
- * @returns {400} JSON indiquant que les champs requis sont manquants ou que l'email existe déjà
+ * @description Retourne tous les utilisateurs
+ * @returns {201} JSON contenant la liste des utilisateurs
  * @returns {500} JSON en cas d'erreur serveur
  */
 router.get('/users', (req, res) => {
