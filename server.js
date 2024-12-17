@@ -148,6 +148,55 @@ app.get('/todos', (req, res) => {
     });
 });
 
+// Ajouter une nouvelle tâche
+    app.post('/todos', (req, res) => {
+        const { title, description, userEmail } = req.body;
+        db.query(
+            'INSERT INTO todos (title, description, userEmail) VALUES (?, ?, ?)',
+            [title, description, userEmail],
+            (err, results) => {
+                if (err) return res.status(500).send(err);
+                res.json({ message: 'Todo ajouté avec succès', todoId: results.insertId });
+            }
+        );
+    });
+
+    // Récupérer les tâches par utilisateur
+    app.get('/todos/:email', (req, res) => {
+        const email = req.params.email;
+        console.log('Email reçu depuis l\'URL pour la requete todos :', email);
+        db.query('SELECT * FROM todos WHERE userEmail = ?', [email], (err, results) => {
+            if (err) return res.status(500).send(err);
+            res.json(results);
+        });
+    });
+
+    // Mettre à jour une tâche
+    app.put('/todos/:id', (req, res) => {
+        const todoId = req.params.id;
+        const { title, description, done } = req.body;
+
+        console.log('Données reçues :', { title, description, done }); // Log des données reçues
+
+        db.query(
+            'UPDATE todos SET title = ?, description = ?, done = ? WHERE id = ?',
+            [title, description, done, todoId],
+            (err, results) => {
+                if (err) return res.status(500).send(err);
+                res.json({ message: 'Todo mis à jour avec succès' });
+            }
+        );
+    });
+
+    // Supprimer une tâche
+    app.delete('/todos/:id', (req, res) => {
+        const todoId = req.params.id;
+        db.query('DELETE FROM todos WHERE id = ?', [todoId], (err, results) => {
+            if (err) return res.status(500).send(err);
+            res.json({ message: 'Todo supprimé avec succès' });
+        });
+    });
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     const db = createDatabaseConnection();
