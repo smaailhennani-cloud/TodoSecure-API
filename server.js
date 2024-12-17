@@ -14,7 +14,7 @@ app.use(cors({ origin: ['http://localhost:4200', 'https://gylgamesh34.github.io'
 app.use(express.json()); // Middleware pour le parsing JSON
 
 // Routes
-app.use('/users', userRoutes);
-app.use('/todos', todoRoutes);
+app.use('', userRoutes);
+app.use('', todoRoutes);
 
 app.listen(PORT, () => console.log(`Serveur démarré sur http://localhost:${PORT}`));
