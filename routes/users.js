@@ -76,7 +76,7 @@ router.get('/users', (req, res) => {
 });
 
 /**
- * @route POST /users/login
+ * @route POST /login
  * @description Connecte un utilisateur en vérifiant les identifiants et génère un token JWT
  * @bodyParam {string} email - Email de l'utilisateur
  * @bodyParam {string} password - Mot de passe de l'utilisateur
