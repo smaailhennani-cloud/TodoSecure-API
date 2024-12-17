@@ -57,6 +57,25 @@ router.post('/users', (req, res) => {
 });
 
 /**
+ * @route GET /users
+ * @description Crée un nouvel utilisateur avec un mot de passe haché
+ * @bodyParam {string} email - Email unique de l'utilisateur
+ * @bodyParam {string} password - Mot de passe en texte clair
+ * @returns {201} JSON contenant un message de succès
+ * @returns {400} JSON indiquant que les champs requis sont manquants ou que l'email existe déjà
+ * @returns {500} JSON en cas d'erreur serveur
+ */
+router.get('/users', (req, res) => {
+  db.query('SELECT * FROM users', (err, results) => {
+    if (err) {
+      console.error('Erreur SQL :', err);
+      return res.status(500).json({ message: 'Erreur serveur', details: err.message });
+    }
+    return res.status(201).json(results);
+  });
+});
+
+/**
  * @route POST /users/login
  * @description Connecte un utilisateur en vérifiant les identifiants et génère un token JWT
  * @bodyParam {string} email - Email de l'utilisateur
