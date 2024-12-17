@@ -14,7 +14,7 @@ const router = express.Router();
  * @returns {400} JSON indiquant que les champs requis sont manquants ou que l'email existe déjà
  * @returns {500} JSON en cas d'erreur serveur
  */
-router.post('/', (req, res) => {
+router.post('/users', (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {

@@ -15,6 +15,6 @@ app.use(express.json()); // Middleware pour le parsing JSON
 
 // Routes
 app.use('', userRoutes);
-app.use('', todoRoutes);
+app.use('/todos', todoRoutes);
 
 app.listen(PORT, () => console.log(`Serveur démarré sur http://localhost:${PORT}`));
