@@ -115,7 +115,7 @@ router.post('/login', (req, res) => {
       }
 
       // Générer le token JWT
-      const token = jwt.sign({ email: user.email }, 'votre_clé_secrète', { expiresIn: '1h' });
+      const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: '1h' });
       res.json({ token });
     });
   });
