@@ -7,7 +7,7 @@ const todoService = require('../services/todoService');
  * @param {Response} res
  */
 exports.getTodos = async (req, res) => {
-    const { email } = req.query.userEmail;
+    const email = req.query.userEmail;
     try {
         if (email) {
             const todosUser = await todoService.getTodosByUserEmail(email);
