@@ -20,11 +20,11 @@ exports.getTodos = () => {
  * @param {string} email - Email de l'utilisateur
  * @returns {Promise<Array>} Liste de tâches
  */
-exports.getTodosByEmail = (email) => {
+exports.getTodosByEmail = (userEmail) => {
     return new Promise((resolve, reject) => 
-    db.query('SELECT * FROM todos WHERE userEmail = ?', [email], (err, results) => {
+    db.query('SELECT * FROM todos WHERE userEmail = ?', [userEmail], (err, results) => {
         if (err) return reject(err);
-        resolve[results];
+        resolve(results);
     }))
 }
 

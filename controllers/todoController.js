@@ -7,10 +7,10 @@ const todoService = require('../services/todoService');
  * @param {Response} res
  */
 exports.getTodos = async (req, res) => {
-    const { userEmail } = req.params;
+    const { email } = req.params;
     try {
-        if (userEmail) {
-            const todosUser = await todoService.getTodosByUserEmail(userEmail);
+        if (email) {
+            const todosUser = await todoService.getTodosByUserEmail(email);
             res.status(200).json(todosUser);
         } else {
             const todos = await todoService.getTodos();
