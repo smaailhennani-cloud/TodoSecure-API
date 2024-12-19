@@ -20,8 +20,9 @@ router.get('/', todoController.getTodos);         // GET /todos
  * @param {string} email - Email de l'utilisateur
  * @returns {200} Liste de tâches filtrées
  */
+/**
 router.get('/:email', todoController.getTodos);  // GET /todos/:email
-
+ */
 /**
  * @route POST /todos
  * @description Crée une nouvelle tâche
