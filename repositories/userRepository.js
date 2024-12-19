@@ -6,7 +6,7 @@ const db = require('../database/db');
  * @param {string} email
  * @returns {Promise<Object|undefined>} L'utilisateur ou undefined s'il n'est pas trouvé
  */
-exports.getByEmail = (email) => {
+exports.getUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
             if (err) return reject(err);
