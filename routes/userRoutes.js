@@ -10,14 +10,14 @@ const router = express.Router();
  * @body {string} password - Mot de passe de l'utilisateur
  * @returns {201} Utilisateur créé
  */
-router.post('users/', userController.createUser);     // POST /users
+router.post('/users', userController.createUser);     // POST /users
 
 /**
  * @route GET /users
  * @description Récupère tous les utilisateurs
  * @returns {200} Liste d'utilisateurs
  */
-router.get('users/', userController.getAllUsers);     // GET /users
+router.get('/users', userController.getAllUsers);     // GET /users
 
 /**
  * @route POST /users/login
