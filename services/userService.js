@@ -1,4 +1,5 @@
 const userRepository = require('../repositories/userRepository');
+const bcrypt = require('bcrypt');
 
 /**
  * Crée un nouvel utilisateur après vérification de l'email et hachage du mot de passe
