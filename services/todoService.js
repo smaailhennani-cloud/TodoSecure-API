@@ -6,7 +6,7 @@ const todoRepository = require('../repositories/todoRepository');
  * @returns {Array} Liste de tâches
  */
 exports.getTodosByUserEmail = async (userEmail) => {
-    return await todoRepository.getTodosByUserEmail(userEmail);
+    return await todoRepository.getTodosByEmail(userEmail);
 };
 
 
