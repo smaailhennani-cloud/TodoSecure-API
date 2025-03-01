@@ -14,7 +14,7 @@ exports.createUser = async (req, res) => {
 
     try {
         const result = await userService.createUser(email, password);
-        return result;
+        return res.status(201).json(result);
     } catch (err) {
         const status = err.statusCode || 500;
         return res.status(status).json({ error: err.message });

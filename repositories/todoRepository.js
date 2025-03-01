@@ -38,7 +38,7 @@ exports.getTodosByEmail = (userEmail) => {
 exports.createTodo = (title, description, userEmail) => {
     return new Promise((resolve, reject) => {
         db.query('INSERT INTO todos (title, description, userEmail) VALUES (?, ?, ?)',
-            [title, description, email], (err, results) => {
+            [title, description, userEmail], (err, results) => {
                 if (err) return reject(err);
                 resolve(results.insertID);
             }
@@ -59,7 +59,7 @@ exports.updateTodo = (id, title, description, done) => {
         db.query('UPDATE todos SET title = ?, description = ?, done = ? WHERE id = ?',
             [title, description, done, id],
             (err) => {
-                return reject(err);
+                if(err) return reject(err);
                 resolve();
             }
         );

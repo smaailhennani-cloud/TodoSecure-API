@@ -23,7 +23,7 @@ exports.getUserByEmail = (email) => {
  */
 exports.createUser = (email, hashedPassword) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, password], (err, results) => {
+        db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err, results) => {
             if (err) return reject(err);
             resolve(results.insertId);
         });
