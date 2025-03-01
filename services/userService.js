@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 exports.createUser = async (email, password) => {
     existingUser = await userRepository.getUserByEmail(email);
     if (existingUser) {
-        const error = new Error('Cet email est déja utilisé.');
+        const error = new Error('Cet email est déjà utilisé.');
         error.statusCode = 400;
         throw error;
     }
