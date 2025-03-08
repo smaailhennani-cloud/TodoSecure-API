@@ -1,9 +1,12 @@
+const fs = require('fs');
+const path = require('path');
 const mysql = require('mysql2');
 
 // Configuration de la base de données
 const dbConfig = {
   uri: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: true },
+  multipleStatements: true
 };
 
 let connection;
@@ -18,6 +21,20 @@ function handleDisconnect() {
       setTimeout(handleDisconnect, 5000); // Tente de se reconnecter après 5 secondes
     } else {
       console.log('Connecté à MySQL');
+      // Lecture et exécution du script SQL pour créer les tables
+      fs.readFile(path.join(__dirname, 'init.sql'), 'utf8', (err, data) => {
+        if (err) {
+          console.error("Erreur de lecture du fichier SQL :", err);
+        } else {
+          connection.query(data, (err, results) => {
+            if (err) {
+              console.error("Erreur lors de l'exécution du script SQL :", err);
+            } else {
+              console.log("Script SQL exécuté avec succès, tables créées ou mises à jour.");
+            }
+          });
+        }
+      });
     }
   });
 
