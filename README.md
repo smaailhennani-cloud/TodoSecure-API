@@ -65,3 +65,5 @@ Taches:
 - PUT	/todos/:id : Mettre à jour une tâche existante (JWT requis).	params : { "title": "Titre modifié", "description": "Description modifiée", "done": true/false }
 - DELETE /todos/:id : Supprimer une tache (JWT requis). params : Aucun
 
+## Licence
+Ce projet est disponible sous licence MIT. Voir le fichier LICENSE pour plus d'informations.
