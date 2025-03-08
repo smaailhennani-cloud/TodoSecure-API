@@ -57,7 +57,7 @@ Votre application sera accessible à l'adresse : http://localhost:3000
 *** Endpoints de l'API : 
 Utilisateurs: 
 - POST /users : Ajouter un utilisateur, params : { "email": "utilisateur@example.com", "password": "motdepasse" }.
-- POST /users/login : Connexion utilisateur (JWT).	params { "email": "utilisateur@example.com", "password": "motdepasse" }
+- POST /login : Connexion utilisateur (JWT).	params { "email": "utilisateur@example.com", "password": "motdepasse" }
 
 Taches:
 - GET /todos : Récupérer les tâches (JWT requis). params: ?userEmail=utilisateur@example.com (optionnel pour filtrer)
