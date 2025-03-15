@@ -1,5 +1,3 @@
-// __tests__/repositories/userRepository.test.js
-
 jest.mock('../../database/db'); // Mock du fichier db.js
 const db = require('../../database/db');
 const userRepository = require('../../repositories/userRepository');
@@ -9,11 +7,8 @@ describe('userRepository', () => {
     jest.clearAllMocks();
   });
 
-  // ---------------------------
-  //       getUserByEmail
-  // ---------------------------
   describe('getUserByEmail', () => {
-    test('should return a user if found', async () => {
+    test('doit retourner un utilisateur existant', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(null, [{ id: 1, email: 'test@example.com', password: 'hashedpassword' }], []);
       });
@@ -25,39 +20,37 @@ describe('userRepository', () => {
         ['test@example.com'],
         expect.any(Function)
       );
-      expect(user).toEqual({ id: 1, email: 'test@example.com', password: 'hashedpassword' });
+      expect(user).toEqual({ 
+        id: 1, email: 'test@example.com', password: 'hashedpassword' 
+      });
     });
 
-    test("should return 'undefined' if no user is found", async () => {
+    test("doit retourner undefined si aucun utilisateur trouvé", async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(null, [], []);
       });
 
-      const user = await userRepository.getUserByEmail('notfound@example.com');
+      const user = await userRepository.getUserByEmail('userUndefined@test.com');
 
       expect(db.query).toHaveBeenCalledWith(
         'SELECT * FROM users WHERE email = ?',
-        ['notfound@example.com'],
+        ['userUndefined@test.com'],
         expect.any(Function)
       );
       expect(user).toBeUndefined();
     });
 
-    test('should reject with an error if the database encounters an issue', async () => {
+    test('doit rejeter une erreur en cas d\'erreur SQL', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(new Error('Database error'), null, null);
       });
 
-      await expect(userRepository.getUserByEmail('test@example.com')).rejects.toThrow('Database error');
+      await expect(userRepository.getUserByEmail('test@test.com')).rejects.toThrow('Database error');
     });
   });
 
-  // ---------------------------
-  //         createUser
-  // ---------------------------
   describe('createUser', () => {
-    test("should create a new user and return the inserted ID", async () => {
-      // Simule un insertId de 42
+    test('doit retourner l\'ID de l\'utilisateur créé', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(null, { insertId: 42 });
       });
@@ -72,25 +65,22 @@ describe('userRepository', () => {
       expect(insertId).toBe(42);
     });
 
-    test('should throw an error if the database encounters a problem during creation', async () => {
+    test('doit rejeter une erreur en cas d\'erreur de création', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(new Error('Insert error'), null);
       });
 
       await expect(
-        userRepository.createUser('newuser@example.com', 'hashedpassword')
+        userRepository.createUser('newuser@test.com', 'hashedpassword')
       ).rejects.toThrow('Insert error');
     });
   });
 
-  // ---------------------------
-  //        getAllUsers
-  // ---------------------------
   describe('getAllUsers', () => {
-    test('should return all users', async () => {
+    test('doit retourner la liste complète des utilisateurs', async () => {
       const fakeUsers = [
-        { id: 1, email: 'user1@example.com', password: 'hashed1' },
-        { id: 2, email: 'user2@example.com', password: 'hashed2' },
+        { id: 1, email: 'user1@test.com', password: 'hashed1' },
+        { id: 2, email: 'user2@test.com', password: 'hashed2' },
       ];
 
       db.query.mockImplementation((sql, callback) => {
@@ -103,7 +93,7 @@ describe('userRepository', () => {
       expect(users).toEqual(fakeUsers);
     });
 
-    test('should throw an error if the database encounters a problem during recovery', async () => {
+    test('doit rejeter une erreur en cas d\'erreur de requête SQL', async () => {
       db.query.mockImplementation((sql, callback) => {
         callback(new Error('Select error'), null);
       });

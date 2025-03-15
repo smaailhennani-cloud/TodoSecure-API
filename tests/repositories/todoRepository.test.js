@@ -8,7 +8,7 @@ describe('todoRepository', () => {
     });
 
     describe('getTodosByEmail', () => {
-        test('should return todos with userEmail', async () => {
+        test('doit retourner les tâches associées à l\'email de l\'utilisateur', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(null, [{ id: 1, title: 'Faire les courses', userEmail: 'test@gmail.com' }]);
             });
@@ -25,7 +25,7 @@ describe('todoRepository', () => {
             expect(todo).toEqual([{ id: 1, title: 'Faire les courses', userEmail: 'test@gmail.com' }]);
         });
         
-        test('should reject with an error if the database encounters an issue', async () => {
+        test('doit générer une erreur en cas de problème de base de données', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(new Error('Database error'));
             });
@@ -38,7 +38,7 @@ describe('todoRepository', () => {
     });
     
     describe('createTodo', () => {
-        test('should return the id of the created todo', async () => {
+        test('doit retourner l\'id de la tâche créée', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(null, { insertID: 1 });
             });
@@ -55,7 +55,7 @@ describe('todoRepository', () => {
             expect(id).toBe(1);
         });
         
-        test('should reject with an error if the database encounters an issue', async () => {
+        test('doit rejeter une erreur en cas d\'échec de création', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(new Error('Database error'));
             });
@@ -68,7 +68,7 @@ describe('todoRepository', () => {
     });
 
     describe('updateTodo', () => {
-        test('should update a todo and resolve successfully', async () => {
+        test('doit mettre à jour une tâche avec succès', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(null, null);
             });
@@ -83,7 +83,7 @@ describe('todoRepository', () => {
             expect(db.query).toHaveBeenCalledTimes(1);
         });
         
-        test('should reject with an error if the database encounters an issue', async () => {
+        test('doit rejeter en cas d\'erreur de mise à jour', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(new Error('Database error'));
             });
@@ -95,7 +95,7 @@ describe('todoRepository', () => {
     });
     
     describe('deleteTodo', () => {
-        test('should delete the todo successfully', async () => {
+        test('doit supprimer une tâche avec succès', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(null, null);
             });
@@ -110,7 +110,7 @@ describe('todoRepository', () => {
             );
         });
         
-        test('should reject with an error if the database encounters an issue', async () => {
+        test('doit rejeter en cas d\'erreur lors de la suppression', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(new Error('Database error'));
             });
