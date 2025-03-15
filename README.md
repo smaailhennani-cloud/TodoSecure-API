@@ -1,7 +1,7 @@
-# API de Gestion des Tâches Node.js
+# API de Gestion des Tâches Node.js (Backend)
 
 ## Description
-API RESTful Node.js dédiée à la gestion efficace des utilisateurs et des tâches, intégrant une sécurité avancée et un déploiement avec Docker.
+API RESTful Node.js dédiée à la gestion efficace des utilisateurs et des tâches, intégrant une sécurité avancée et un déploiement avec Docker et Scalingo.
 
 ---
 
@@ -15,14 +15,13 @@ API RESTful Node.js dédiée à la gestion efficace des utilisateurs et des tâc
   - Filtrage des tâches par email utilisateur.
 
 - **Sécurité** :
-  - Chiffrement des mots de passe avec `bcrypt`.
+  - Chiffrement des mots de passe avec **bcrypt**.
   - Sécurisation des routes grâce à l'authentification JWT.
 
 ---
 
 ## **Technologies utilisées**
-- **Node.js** : Environnement d'exécution JavaScript.
-- **Express.js** : Framework léger pour les APIs.
+- **Node.js & Express.js** : Développement rapide d’API RESTful
 - **MySQL** : Base de données relationnelle.
 - **bcrypt** : Hachage des mots de passe pour la sécurité.
 - **JWT (jsonwebtoken)** : Authentification et gestion des sessions.
@@ -31,7 +30,15 @@ API RESTful Node.js dédiée à la gestion efficace des utilisateurs et des tâc
 
 ---
 
-## Installation & Configuration
+## Déploiement & Liens
+
+### API (Backend)
+- **Production (Scalingo)** :  
+  [https://todosecure-api.osc-fr1.scalingo.io](https://todosecure-api.osc-fr1.scalingo.io)  
+
+---
+
+## Installation (en Local)
 
 1. **Cloner le dépôt :**
    ```bash
@@ -39,31 +46,64 @@ API RESTful Node.js dédiée à la gestion efficace des utilisateurs et des tâc
    cd test
    ```
 
-2. **Configurer l'environnement :**
-
+2. **Déploiement avec Docker Compose  :**  
    ```bash
-   cp .env.example .env
-   # Modifier le fichier .env avec les paramètres de votre base de données et de votre application
+   docker-compose down -v   
+   docker-compose up -d --build 
    ```
+L'API sera accessible sur : http://localhost:3000.
 
-3. **Déploiement avec Docker :**
-   Construire et exécuter le conteneur Docker :
-   ```bash
-   docker build -t mon-projet-node .
-   docker run -p 3000:3000 mon-projet-node
-   ````
-Votre application sera accessible à l'adresse : http://localhost:3000
+### Exemple de requête /login
 
-*** Endpoints de l'API : 
-Utilisateurs: 
-- POST /users : Ajouter un utilisateur, params : { "email": "utilisateur@example.com", "password": "motdepasse" }.
-- POST /login : Connexion utilisateur (JWT).	params { "email": "utilisateur@example.com", "password": "motdepasse" }
+Envoyez une requête POST à /login avec le JSON suivant :
 
-Taches:
-- GET /todos : Récupérer les tâches (JWT requis). params: ?userEmail=utilisateur@example.com (optionnel pour filtrer)
-- POST /todos : Ajouter une tâche (JWT requis). params: { "title": "Titre de la tâche", "description": "Description de la tâche", "userEmail": "utilisateur@example.com" }
-- PUT	/todos/:id : Mettre à jour une tâche existante (JWT requis).	params : { "title": "Titre modifié", "description": "Description modifiée", "done": true/false }
-- DELETE /todos/:id : Supprimer une tache (JWT requis). params : Aucun
+```json
+{
+  "email": "x@x.x",
+  "password": "x"
+}
+```
+Exemple de réponse (200 OK) :
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+Capture d'écran Postman :   
+
+![Requête d'authentification](./docs/images/capture_postman.png)
+
+
+### Endpoints de l'API : 
+
+
+#### Utilisateurs
+
+| Méthode | Route                | Description                   | Paramètres attendus
+|---------|----------------------|-------------------------------|-------------------------
+| POST    | `/users`             | Créer un utilisateur          | `{ "email": "...", "password": "..." }`
+| POST    | `/login`             | Connexion utilisateur (JWT)   | `{ "email": "...", "password": "..." }`
+
+
+#### Tâches (todos)
+
+| Méthode | Route                | Description                   | Paramètres attendus
+|---------|----------------------|-------------------------------|-------------------------
+| GET     | `/todos`             | Récupérer les taches          | `?userEmail=...` (optionnel pour filtrer par utilisateur)    
+| POST    | `/todos`             | Créer une nouvelle tâche      | `{ "title": "...", "description": "...", "userEmail": "..." }`   
+| PUT     | `/todos/:id`         | Modifier une tâche existante  | `{ "title": "...", "description": "...", "done": true/false }`     
+| DELETE  | `/todos/:id`         | Supprimer une tâche           | Aucun paramètre
+
+
+## Voir aussi
+- Front-end (TodoApp) :  
+[Démo en ligne](https://smaail-hennani.github.io/todoApp/login) | [Code source](https://github.com/smaail-hennani/todoApp/tree/finalAPP)  
+
+## Contact
+** Smaail ** – Développeur Angular & Node.js Fullstack
+- Email : smaail.hennani@gmail.com
+- LinkedIn : www.linkedin.com/in/smaail-hennani-3a0494117
 
 ## Licence
 Ce projet est disponible sous licence MIT. Voir le fichier LICENSE pour plus d'informations.

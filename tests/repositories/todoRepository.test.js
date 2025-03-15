@@ -68,7 +68,7 @@ describe('todoRepository', () => {
     });
 
     describe('updateTodo', () => {
-        test('should update a todo and resolve succefully', async () => {
+        test('should update a todo and resolve successfully', async () => {
             db.query.mockImplementation((sql, values, callback) => {
                 callback(null, null);
             });

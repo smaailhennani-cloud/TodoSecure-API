@@ -13,7 +13,7 @@ describe('userRepository', () => {
   //       getUserByEmail
   // ---------------------------
   describe('getUserByEmail', () => {
-    test('devrait renvoyer un utilisateur si trouvé', async () => {
+    test('should return a user if found', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(null, [{ id: 1, email: 'test@example.com', password: 'hashedpassword' }], []);
       });
@@ -28,7 +28,7 @@ describe('userRepository', () => {
       expect(user).toEqual({ id: 1, email: 'test@example.com', password: 'hashedpassword' });
     });
 
-    test("devrait renvoyer 'undefined' si aucun utilisateur n'est trouvé", async () => {
+    test("should return 'undefined' if no user is found", async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(null, [], []);
       });
@@ -43,7 +43,7 @@ describe('userRepository', () => {
       expect(user).toBeUndefined();
     });
 
-    test('devrait lever une erreur si la base de données rencontre un problème', async () => {
+    test('should reject with an error if the database encounters an issue', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(new Error('Database error'), null, null);
       });
@@ -56,7 +56,7 @@ describe('userRepository', () => {
   //         createUser
   // ---------------------------
   describe('createUser', () => {
-    test("devrait créer un nouvel utilisateur et renvoyer l'ID inséré", async () => {
+    test("should create a new user and return the inserted ID", async () => {
       // Simule un insertId de 42
       db.query.mockImplementation((sql, values, callback) => {
         callback(null, { insertId: 42 });
@@ -72,7 +72,7 @@ describe('userRepository', () => {
       expect(insertId).toBe(42);
     });
 
-    test('devrait lever une erreur si la base de données rencontre un problème lors de la création', async () => {
+    test('should throw an error if the database encounters a problem during creation', async () => {
       db.query.mockImplementation((sql, values, callback) => {
         callback(new Error('Insert error'), null);
       });
@@ -87,7 +87,7 @@ describe('userRepository', () => {
   //        getAllUsers
   // ---------------------------
   describe('getAllUsers', () => {
-    test('devrait renvoyer tous les utilisateurs', async () => {
+    test('should return all users', async () => {
       const fakeUsers = [
         { id: 1, email: 'user1@example.com', password: 'hashed1' },
         { id: 2, email: 'user2@example.com', password: 'hashed2' },
@@ -103,7 +103,7 @@ describe('userRepository', () => {
       expect(users).toEqual(fakeUsers);
     });
 
-    test('devrait lever une erreur si la base de données rencontre un problème lors de la récupération', async () => {
+    test('should throw an error if the database encounters a problem during recovery', async () => {
       db.query.mockImplementation((sql, callback) => {
         callback(new Error('Select error'), null);
       });

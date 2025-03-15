@@ -2,12 +2,25 @@ const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2');
 
-// Configuration de la base de données
-const dbConfig = {
-  uri: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: true },
-  multipleStatements: true
-};
+// Configuration de la base de données avec scalingo
+if (process.env.DATABASE_URL) {
+  const dbConfig = {
+    uri: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: true },
+    multipleStatements: true
+  };
+} else {
+  // Configuration locale : connexion vers le conteneur MySQL (nommé "mysql" dans docker-compose)
+  dbConfig = {
+    host: process.env.DB_HOST || 'mysql',
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER || 'admin',
+    password: process.env.DB_PASSWORD || 'adminpassword',
+    database: process.env.DB_NAME || 'tododb',
+    multipleStatements: true
+  };
+  console.log("Utilisation de la configuration locale pour la connexion MySQL");
+}
 
 let connection;
 
